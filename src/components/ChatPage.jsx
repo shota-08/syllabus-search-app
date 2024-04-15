@@ -2,8 +2,14 @@
 
 import React, { useState } from "react";
 import { FaPaperPlane } from "react-icons/fa";
+import OpenAI from "openai";
 
 const ChatPage = () => {
+  const openai = new OpenAI({
+    apiKey: process.env.REACT_APP_OPENAI_API_KEY,
+    dangerouslyAllowBrowser: true,
+  });
+
   const [inputMessage, setInputMessage] = useState("");
   const [messages, setMessages] = useState([]);
 
@@ -18,6 +24,20 @@ const ChatPage = () => {
 
     setMessages([...messages, messageData]);
     setInputMessage("");
+
+    const gpt3Response = await openai.chat.completions.create({
+      messages: [{ role: "user", content: inputMessage }],
+      model: "gpt-3.5-turbo",
+    });
+
+    const botResponse = gpt3Response.choices[0].message.content;
+    const botMessageData = {
+      text: botResponse,
+      sender: "bot",
+      createdAt: new Date(),
+    };
+
+    setMessages((messages) => [...messages, botMessageData]);
   };
 
   return (
@@ -26,19 +46,18 @@ const ChatPage = () => {
         国文学科
       </h1>
       <div className="flex-grow overflow-y-auto mb-4">
-        <div className="text-right">
-          <div className="bg-blue-500 inline-block rounded px-4 py-2">
-            <p className="text-white font-medium">Hello</p>
-          </div>
-        </div>
-        <div className="text-left">
-          <div className="bg-green-500 inline-block rounded px-4 py-2">
-            <p className="text-white font-medium">How are you?</p>
-          </div>
-        </div>
         {messages.map((message, index) => (
-          <div key={index} className="text-right">
-            <div className="bg-blue-500 inline-block rounded px-4 py-2">
+          <div
+            key={index}
+            className={message.sender === "user" ? "text-right" : "text-left"}
+          >
+            <div
+              className={
+                message.sender === "user"
+                  ? "bg-blue-500 inline-block rounded px-4 py-2"
+                  : "bg-green-500 inline-block rounded px-4 py-2"
+              }
+            >
               <p className="text-white font-medium">{message.text}</p>
             </div>
           </div>
