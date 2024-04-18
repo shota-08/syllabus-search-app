@@ -1,4 +1,4 @@
-import Chat from "./components/Chat";
+import ChatPage from "./components/ChatPage";
 import Sidebar from "./components/Sidebar";
 
 export const App = () => {
@@ -9,7 +9,7 @@ export const App = () => {
           <Sidebar />
         </div>
         <div className="w-4/5 h-full">
-          <Chat />
+          <ChatPage />
         </div>
       </div>
     </div>
