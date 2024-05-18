@@ -1,43 +1,50 @@
-"use client";
-
 import React, { useState } from "react";
 import { FaPaperPlane } from "react-icons/fa";
-import OpenAI from "openai";
+import axios from "axios";
 
 const ChatPage = () => {
-  const openai = new OpenAI({
-    apiKey: process.env.REACT_APP_OPENAI_API_KEY,
-    dangerouslyAllowBrowser: true,
-  });
-
-  const [inputMessage, setInputMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const [inputMessage, setInputMessage] = useState("");
+  const [titles, setTitles] = useState([]);
+  const url = "http://127.0.0.1:8001/send";
 
-  const sendMessage = async () => {
-    if (!inputMessage.trim()) return;
+  const sendMessage = () => {
+    const userMessage = inputMessage;
+    if (!userMessage.trim()) return; // 空白メッセージは送信しない
+    setMessages([
+      ...messages,
+      { text: userMessage, title: "", sender: "user" },
+    ]);
+    setInputMessage(""); // 送信後は空白に
 
-    const messageData = {
-      text: inputMessage,
-      sender: "user",
-      createdAt: new Date(),
-    };
-
-    setMessages([...messages, messageData]);
-    setInputMessage("");
-
-    const gpt3Response = await openai.chat.completions.create({
-      messages: [{ role: "user", content: inputMessage }],
-      model: "gpt-3.5-turbo",
-    });
-
-    const botResponse = gpt3Response.choices[0].message.content;
-    const botMessageData = {
-      text: botResponse,
-      sender: "bot",
-      createdAt: new Date(),
-    };
-
-    setMessages((messages) => [...messages, botMessageData]);
+    axios
+      .post(url, { text: userMessage })
+      .then((res) => {
+        const botResponseText = res.data.text;
+        const botResponseTitle = res.data.title;
+        const botResponseUrl = res.data.url;
+        const botResponseContent = res.data.content;
+        setMessages((prev) => [
+          ...prev,
+          { text: botResponseText, sender: "bot" },
+        ]);
+        setTitles((prev) => [
+          ...prev,
+          {
+            title: botResponseTitle,
+            url: botResponseUrl,
+            content: botResponseContent,
+          },
+        ]);
+      })
+      .catch((error) => {
+        console.log("error!", error);
+        setMessages((prev) => [...prev, { text: "error!", sender: "bot" }]);
+        setTitles((prevTitles) => [
+          ...prevTitles,
+          { title: "", url: "", content: "" },
+        ]);
+      });
   };
 
   return (
@@ -45,6 +52,31 @@ const ChatPage = () => {
       <h1 className="flex justify-evenly item-center text-4xl mb-10">
         国文学科
       </h1>
+
+      <div className="border-2 rounded flex flex-wrap">
+        {titles.map((title, index) => (
+          <div
+            key={index}
+            className="w-64 h-30 overflow-auto border-2 rounded-lg p-4 m-2"
+          >
+            <p>
+              {title.url ? (
+                <a
+                  href={title.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-blue-500 hover:text-blue-700"
+                >
+                  {title.title}
+                </a>
+              ) : (
+                title.title
+              )}
+            </p>
+          </div>
+        ))}
+      </div>
+
       <div className="flex-grow overflow-y-auto mb-4">
         {messages.map((message, index) => (
           <div
@@ -54,8 +86,8 @@ const ChatPage = () => {
             <div
               className={
                 message.sender === "user"
-                  ? "bg-blue-500 inline-block rounded px-4 py-2"
-                  : "bg-green-500 inline-block rounded px-4 py-2"
+                  ? "bg-blue-500 inline-block rounded-lg px-4 py-2 m-2"
+                  : "bg-green-500 inline-block rounded-lg px-4 py-2 m-2"
               }
             >
               <p className="text-white font-medium">{message.text}</p>
