@@ -6,7 +6,7 @@ const ChatPage = () => {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const [titles, setTitles] = useState([]);
-  const url = "syllabus-search-app-0519v3.azurewebsites.net/send";
+  const url = "0520-bacnend.azurewebsites.net/send";
 
   const sendMessage = () => {
     const userMessage = inputMessage;
