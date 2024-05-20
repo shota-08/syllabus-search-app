@@ -6,7 +6,7 @@ const ChatPage = () => {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const [titles, setTitles] = useState([]);
-  const url = "0520-bacnend.azurewebsites.net/send";
+  const url = "https://0520-bacnend.azurewebsites.net/send";
 
   const sendMessage = () => {
     const userMessage = inputMessage;
