@@ -3,7 +3,7 @@ import ReactMarkdown from "react-markdown";
 
 const Home = () => {
   return (
-    <div className="bg-gray-100 h-full p-4 flex flex-col">
+    <div className="bg-gray-100 h-full p-4 overflow-auto flex flex-col">
       <h1 className="flex justify-evenly item-center text-4xl mb-10">
         syllabus search
       </h1>
