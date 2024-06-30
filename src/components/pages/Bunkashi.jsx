@@ -10,7 +10,7 @@ const Bunkashi = () => {
   const [inputMessage, setInputMessage] = useState("");
   const [titles, setTitles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const url = "https://backend-0521.azurewebsites.net/bunkashi";
+  const url = "https://backend-0624.azurewebsites.net/bunkashi";
 
   const sendMessage = () => {
     const userMessage = inputMessage;

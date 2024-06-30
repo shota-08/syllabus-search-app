@@ -10,7 +10,7 @@ const Eibun = () => {
   const [inputMessage, setInputMessage] = useState("");
   const [titles, setTitles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const url = "https://backend-0521.azurewebsites.net/eibun";
+  const url = "https://backend-0624.azurewebsites.net/eibun";
 
   const sendMessage = () => {
     const userMessage = inputMessage;
