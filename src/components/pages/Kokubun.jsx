@@ -10,7 +10,7 @@ const Kokubun = () => {
   const [inputMessage, setInputMessage] = useState("");
   const [titles, setTitles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const url = "https://backend-0624.azurewebsites.net/kokubun";
+  const url = "https://syllabus-search-app-backend.azurewebsites.net/kokubun";
 
   const sendMessage = () => {
     const userMessage = inputMessage;

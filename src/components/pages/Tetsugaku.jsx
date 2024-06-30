@@ -10,7 +10,7 @@ const Tetsugaku = () => {
   const [inputMessage, setInputMessage] = useState("");
   const [titles, setTitles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const url = "https://backend-0624.azurewebsites.net/tetsugaku";
+  const url = "https://syllabus-search-app-backend.azurewebsites.net/tetsugaku";
 
   const sendMessage = () => {
     const userMessage = inputMessage;

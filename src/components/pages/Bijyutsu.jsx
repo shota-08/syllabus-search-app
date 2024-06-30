@@ -10,7 +10,7 @@ const Bijyutsu = () => {
   const [inputMessage, setInputMessage] = useState("");
   const [titles, setTitles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const url = "https://backend-0624.azurewebsites.net/bijyutsu";
+  const url = "https://syllabus-search-app-backend.azurewebsites.net/bijyutsu";
 
   const sendMessage = () => {
     const userMessage = inputMessage;
